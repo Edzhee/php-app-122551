@@ -3,6 +3,12 @@ session_start();
 
 include 'includes/db.php';
 
+
+// Включваме пълно отчитане на грешки
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+
 if (isset($_SESSION['order_success'])) {
     $success_message = $_SESSION['order_success'];
 } else {
@@ -82,6 +88,8 @@ echo '<h5 class="card-title">' . htmlspecialchars($row['name']) . '</h5>';
 echo '<p class="card-text">' . htmlspecialchars($row['description']) . '</p>';
 echo '<p class="card-text"><strong>' . htmlspecialchars($row['price']) . ' лв</strong></p>';
 echo '<a href="order.php?product_id=' . urlencode($row['id']) . '" class="btn btn-primary">Поръчай</a>';
+
+echo '<button class="btn btn-warning favourite-button" data-product-id="'. htmlspecialchars($row['id']).'">Добави в любими</button>';
 echo '</div></div></div>';
 
                 }
@@ -97,5 +105,39 @@ echo '</div></div></div>';
     <footer class="bg-dark text-white text-center py-4">
         <p>&copy; 2024 Takeaway. Всички права запазени.</p>
     </footer>
+    <!-- Включване на jQuery библиотеката -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    
+    $(".favourite-button").click(function() {
+       
+        var productId = $(this).data("product-id");
+
+       
+        $.ajax({
+            url: "ajax/add_favourite.php",  
+            method: "POST",  
+            data: { product_id: productId },  
+            dataType: "json",  
+            success: function(response) {
+               
+                if (response.status == "success") {
+                    alert(response.message);  
+                } else {
+                    alert(response.message);  
+                }
+            },
+            error: function() {
+                alert("Възникна грешка при добавянето на продукта.");
+            }
+        });
+    });
+});
+</script>
+
+
+    
 </body>
 </html>

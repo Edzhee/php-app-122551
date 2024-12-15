@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Време на генериране: 13 дек 2024 в 13:04
+-- Време на генериране: 15 дек 2024 в 23:59
 -- Версия на сървъра: 10.4.28-MariaDB
 -- Версия на PHP: 8.0.28
 
@@ -20,6 +20,38 @@ SET time_zone = "+00:00";
 --
 -- База данни: `takeaway_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Структура на таблица `favorites`
+--
+
+CREATE TABLE `favorites` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура на таблица `favorite_products_users`
+--
+
+CREATE TABLE `favorite_products_users` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Схема на данните от таблица `favorite_products_users`
+--
+
+INSERT INTO `favorite_products_users` (`id`, `user_id`, `product_id`) VALUES
+(2, 1, 2),
+(3, 13, 1);
 
 -- --------------------------------------------------------
 
@@ -132,7 +164,9 @@ INSERT INTO `orders` (`id`, `customer_name`, `total_price`, `status`, `user_id`,
 (67, 'Guest', 12.50, 'pending', 13, '1', 1, '2024-12-10 13:19:59'),
 (68, 'Guest', 12.50, 'pending', 13, '1', 1, '2024-12-11 22:06:34'),
 (69, 'Guest', 12.50, 'pending', 13, '1', 1, '2024-12-11 23:19:04'),
-(70, 'Guest', 12.50, 'pending', 13, '1', 1, '2024-12-11 23:31:42');
+(70, 'Guest', 12.50, 'pending', 13, '1', 1, '2024-12-11 23:31:42'),
+(71, 'Guest', 12.50, 'pending', 13, '1', 1, '2024-12-13 20:44:15'),
+(72, 'Guest', 75.00, 'pending', 13, '1', 6, '2024-12-16 00:35:17');
 
 -- --------------------------------------------------------
 
@@ -175,11 +209,28 @@ INSERT INTO `users` (`id`, `username`, `password`, `email`, `created_at`) VALUES
 (13, 'Edzhe', '$2y$10$S8rJWQZjWn2YCgFkTf5MY.HLmy1JAuJDYteG3WrxgTHHZqWNWjmzO', 'edzhe@abv.bg', '2024-11-27 17:54:57'),
 (14, 'gigi', '$2y$10$f0CJY.B30ZGsqhDdeF7l/eYDun/NFeEM8xTPxuvMIPxqC9YI3uoM.', 'gigi@abv.bg', '2024-12-02 19:08:50'),
 (15, 'vili', '$2y$10$vPUnrm0kldxbDDSFw5YheeaJPQ0Nm7orZNJM5KjV3B4i4otY0Mtg.', 'vili@abv.bg', '2024-12-06 09:56:07'),
-(16, 'с', '$2y$10$9TmQ0Bh3.GRmvvZE7E/Lz..TLLxYTzwl3Stf2HFpZMDEsBymc.50q', 'cs@abv.bg', '2024-12-10 18:44:27');
+(16, 'с', '$2y$10$9TmQ0Bh3.GRmvvZE7E/Lz..TLLxYTzwl3Stf2HFpZMDEsBymc.50q', 'cs@abv.bg', '2024-12-10 18:44:27'),
+(17, 'ed', '$2y$10$3iJ0kt9GFeN5pFsAA/SjHu5rvwdb1BYA2Hao/BOPMYIk/vKskR.GS', 'deed@fcs.bg', '2024-12-15 20:44:56');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Индекси за таблица `favorites`
+--
+ALTER TABLE `favorites`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Индекси за таблица `favorite_products_users`
+--
+ALTER TABLE `favorite_products_users`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Индекси за таблица `menu_items`
@@ -215,6 +266,18 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `favorites`
+--
+ALTER TABLE `favorites`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `favorite_products_users`
+--
+ALTER TABLE `favorite_products_users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `menu_items`
 --
 ALTER TABLE `menu_items`
@@ -224,7 +287,7 @@ ALTER TABLE `menu_items`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `order_items`
@@ -236,11 +299,25 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Ограничения за дъмпнати таблици
 --
+
+--
+-- Ограничения за таблица `favorites`
+--
+ALTER TABLE `favorites`
+  ADD CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `menu_items` (`id`);
+
+--
+-- Ограничения за таблица `favorite_products_users`
+--
+ALTER TABLE `favorite_products_users`
+  ADD CONSTRAINT `favorite_products_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `favorite_products_users_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `menu_items` (`id`);
 
 --
 -- Ограничения за таблица `order_items`
