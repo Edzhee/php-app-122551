@@ -1,0 +1,14 @@
+header {
+    background-color: #FFA500; /* Оранжев цвят */
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+}
+
+
+    .card-img-top {
+        width: 100%; /* Автоматично се адаптира към ширината на контейнера */
+        height: 200px; /* Фиксирана височина */
+        object-fit: cover; /* Изрязва изображението, за да се побере в контейнера */
+    }
+
